@@ -1,9 +1,12 @@
 # Duldoco_StudentProfile
 
-Mobile Student Profile application built with HTML, CSS, and Apache Cordova.
+Responsove Student Profile application built with HTML, CSS, and Apache Cordova.
 
-### Application View Screenshots
-
+### Desktop Layout
 ![Desktop View](screenshots/desktop.png)
+
+### Tablet Layout
 ![Tablet View](screenshots/tablet.png)
+
+### Mobile View
 ![Mobile View](screenshots/mobile.png)
