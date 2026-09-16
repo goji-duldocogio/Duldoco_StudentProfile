@@ -133,26 +133,18 @@ cordova run browser
 
 ### Profile (Homepage)
 ![Profile Page](screenshots/profile.png)
-![Mobile Profile](screenshots/mobileprofile.png)
 
 ### About
 ![About Page](screenshots/about.png)
-![Mobile About](screenshots/mobileabout.png)
 
 ### Skills
 ![Skills Page](screenshots/skills.png)
-![Mobile Skills](screenshots/mobileskills.png)
 
 ### Projects
 ![Projects Page](screenshots/projects.png)
-![Mobile Projects](screenshots/mobileprojects.png)
 
 ### Contact
 ![Contact Page](screenshots/contact.png)
-![Mobile Contact](screenshots/mobilecontact.png)
-
-### Mobile App Rotation
-![Mobile Rotate](screenshots/mobilerotate.png)
 
 ### Responsive Layouts
 
