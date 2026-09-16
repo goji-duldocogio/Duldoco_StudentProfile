@@ -1,0 +1,428 @@
+/* ============================================================
+   main.css — SHARED STYLES
+   Loaded by every page. Contains design tokens, base typography,
+   the navigation, the page header, cards and the footer.
+   Page-specific blocks live in pages.css.
+   ============================================================ */
+
+/* ---------- 1. DESIGN TOKENS ---------- */
+:root {
+    /* Colour */
+    --bg-dark: #050811;
+    --card-bg: rgba(10, 16, 31, 0.85);
+    --panel-bg: rgba(5, 8, 17, 0.7);
+    --border-dim: rgba(0, 255, 102, 0.22);
+    --border-strong: rgba(0, 255, 102, 0.55);
+    --accent-green: #00ff66;
+    --accent-cyan: #00f0ff;
+    --text-main: #e2e8f0;
+    --text-dim: #aab6c6;    /* lifted from #94a3b8 for better contrast */
+    --text-muted: #8a99ad;  /* lifted from #64748b for better contrast */
+
+    /* Type */
+    --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Layout */
+    --wrap: 900px;
+    --gap: 16px;
+    --radius: 8px;
+    --navbar-h: 56px;
+    --tabbar-h: 62px;
+}
+
+/* ---------- 2. RESET & BASE ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image:
+        linear-gradient(rgba(0, 255, 102, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 102, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-attachment: fixed;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    /* Room for the fixed bottom tab bar on small screens */
+    padding-bottom: calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;           /* guards against accidental sideways scroll */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--accent-cyan);
+}
+
+/* Visible keyboard focus everywhere — accessibility requirement */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+/* Skip link for keyboard / screen-reader users */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--accent-green);
+    color: var(--bg-dark);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    padding: 10px 16px;
+    z-index: 999;
+}
+
+.skip-link:focus {
+    left: 8px;
+    top: 8px;
+}
+
+/* ---------- 3. LAYOUT WRAPPER ---------- */
+.container {
+    width: 100%;
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 24px 16px 0;
+}
+
+/* ---------- 4. TOP BAR (brand + desktop nav) ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5, 8, 17, 0.98);
+    border-bottom: 1px solid var(--border-dim);
+    font-family: var(--font-mono);
+    /* NOTE: no backdrop-filter here on small screens. A blur filter on an
+       ancestor becomes the containing block for position:fixed children,
+       which would pin the bottom tab bar inside the header instead of the
+       viewport. The blur is re-added at >= 700px, where the nav is static. */
+}
+
+.topbar-inner {
+    max-width: var(--wrap);
+    min-height: var(--navbar-h);
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* The brand is also a permanent link back to the homepage */
+.brand {
+    color: var(--accent-green);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand:hover,
+.brand:focus {
+    color: var(--accent-cyan);
+}
+
+.prompt-symbol {
+    color: var(--accent-cyan);
+}
+
+/* ---------- 5. MAIN NAVIGATION ----------
+   Same HTML on every page.
+   Small screens  -> fixed bottom tab bar (native app feel)
+   >= 700px       -> inline row inside the top bar
+   ------------------------------------------- */
+.mainnav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    background: rgba(5, 8, 17, 0.97);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-dim);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    align-items: stretch;
+    max-width: var(--wrap);
+    margin: 0 auto;
+}
+
+.nav-list li {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.nav-list a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--tabbar-h);
+    padding: 4px 2px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.02em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-align: center;
+    border-top: 2px solid transparent;
+    transition: color 0.18s ease, background-color 0.18s ease;
+}
+
+.nav-list a:hover,
+.nav-list a:focus {
+    color: var(--accent-green);
+    background: rgba(0, 255, 102, 0.08);
+}
+
+/* Current page marker — tells the user where they are */
+.nav-list a[aria-current="page"] {
+    color: var(--accent-green);
+    background: rgba(0, 255, 102, 0.1);
+    border-top-color: var(--accent-green);
+    font-weight: 700;
+}
+
+/* ---------- 6. SHARED CARD / SECTION COMPONENTS ---------- */
+.cyber-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+    padding: 22px 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.page-title {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    line-height: 1.3;
+    color: var(--text-main);
+    word-break: break-word;
+}
+
+.page-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--text-main);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border-dim);
+}
+
+.accent {
+    color: var(--accent-green);
+}
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 6px;
+    padding: 18px;
+}
+
+.panel h3 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--accent-cyan);
+    margin-bottom: 12px;
+}
+
+.body-text p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    max-width: 68ch;          /* comfortable reading line length */
+    margin-bottom: 14px;
+}
+
+.body-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Terminal-style bullet list */
+.cyber-list {
+    list-style: none;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.cyber-list li {
+    margin-bottom: 7px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.cyber-list li:last-child {
+    margin-bottom: 0;
+}
+
+.cyber-list li::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+}
+
+/* ---------- 7. FOOTER ---------- */
+.site-footer {
+    max-width: var(--wrap);
+    margin: 28px auto 0;
+    padding: 20px 16px;
+    border-top: 1px solid var(--border-dim);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.site-footer .home-link {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--accent-green);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+}
+
+.site-footer .home-link:hover,
+.site-footer .home-link:focus {
+    background: rgba(0, 255, 102, 0.1);
+    border-color: var(--border-strong);
+}
+
+/* ---------- 8. RESPONSIVE: TABLET (>= 700px) ---------- */
+@media (min-width: 700px) {
+    body {
+        padding-bottom: 32px;     /* tab bar is gone, reclaim the space */
+    }
+
+    /* Safe here: the nav is no longer position:fixed at this width */
+    .topbar {
+        background: rgba(5, 8, 17, 0.96);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+
+    /* Navigation moves up into the top bar */
+    .mainnav {
+        position: static;
+        background: none;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        border-top: none;
+        padding-bottom: 0;
+    }
+
+    .nav-list {
+        gap: 4px;
+    }
+
+    .nav-list li {
+        flex: 0 0 auto;
+    }
+
+    .nav-list a {
+        height: auto;
+        padding: 7px 11px;
+        font-size: 0.78rem;
+        border-top: none;
+        border-radius: 4px;
+    }
+
+    .nav-list a[aria-current="page"] {
+        border-top: none;
+        box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+
+    /* Terminal path prefix — only where there is room for it */
+    .nav-list a::before {
+        content: "~/";
+        color: var(--text-muted);
+    }
+
+    .nav-list a[aria-current="page"]::before {
+        color: var(--accent-green);
+    }
+
+    .brand {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding: 30px 24px 0;
+    }
+
+    .cyber-card {
+        padding: 26px 24px;
+    }
+
+    .page-title {
+        font-size: 1.6rem;
+    }
+
+    .section-title {
+        font-size: 1.15rem;
+    }
+}
+
+/* ---------- 9. RESPONSIVE: DESKTOP (>= 1000px) ---------- */
+@media (min-width: 1000px) {
+    .container {
+        padding: 38px 24px 0;
+    }
+
+    .cyber-card {
+        padding: 32px;
+    }
+
+    .page-title {
+        font-size: 1.85rem;
+    }
+}
+
+/* ---------- 10. MOTION PREFERENCES ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

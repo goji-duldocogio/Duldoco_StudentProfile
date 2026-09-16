@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:;">
+    <meta name="description" content="Projects built by Gio Duldoco, including mobile applications made with Apache Cordova.">
+    <title>Projects | Gio Duldoco</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="index.html">
+                <span class="prompt-symbol">&gt;_</span> root@gio-duldoco:~#
+            </a>
+            <nav class="mainnav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="index.html">profile</a></li>
+                    <li><a href="about.html">about</a></li>
+                    <li><a href="skills.html">skills</a></li>
+                    <li><a href="projects.html" aria-current="page">projects</a></li>
+                    <li><a href="contact.html">contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" class="container">
+
+        <section class="cyber-card">
+            <h1 class="page-title"><span class="accent">&gt;</span> Projects</h1>
+            <p class="page-subtitle">Work I have built, what I did on each, and the tools involved.</p>
+
+            <!-- ===== PROJECT 1 ===== -->
+            <article class="project">
+                <h2 class="project-title">Responsive Student Profile</h2>
+                <p>
+                    A single-page student profile application built as a Cordova project. The layout uses
+                    CSS Grid and a mobile-first approach so the same markup reflows cleanly from a phone
+                    screen up to a desktop display without horizontal scrolling or cut-off text.
+                </p>
+                <p class="project-meta"><strong>My role:</strong> Sole developer &mdash; designed the interface, wrote all markup and styles, and set up the Cordova build.</p>
+                <ul class="tech-list">
+                    <li>HTML5</li>
+                    <li>CSS3</li>
+                    <li>CSS Grid</li>
+                    <li>Apache Cordova</li>
+                    <li>Git</li>
+                </ul>
+            </article>
+
+            <!-- ===== PROJECT 2 ===== -->
+            <article class="project">
+                <h2 class="project-title">Multi-Page Student Profile App</h2>
+                <p>
+                    An expansion of the profile application into five separate pages with a shared
+                    navigation bar. The navigation switches between a bottom tab bar on phones and an
+                    inline menu on larger screens, and it is built entirely with standard HTML links
+                    rather than JavaScript routing.
+                </p>
+                <p class="project-meta"><strong>My role:</strong> Sole developer &mdash; restructured the codebase into separate pages and shared stylesheets, and kept the design consistent across all screens.</p>
+                <ul class="tech-list">
+                    <li>HTML5</li>
+                    <li>CSS3</li>
+                    <li>Responsive design</li>
+                    <li>Apache Cordova</li>
+                    <li>Android emulator</li>
+                </ul>
+            </article>
+
+            <!-- ===== PROJECT 3 ===== -->
+            <article class="project">
+                <h2 class="project-title">Student Records Manager</h2>
+                <p>
+                    A console application that stores and retrieves student records, with menu-driven
+                    options to add, search, update and delete entries. Records are written to a local
+                    file so the data survives between runs.
+                </p>
+                <p class="project-meta"><strong>My role:</strong> Sole developer &mdash; designed the data structure, wrote the menu logic and handled file reading and writing.</p>
+                <ul class="tech-list">
+                    <li>Python</li>
+                    <li>File handling</li>
+                    <li>Object-oriented programming</li>
+                </ul>
+            </article>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <a class="home-link" href="index.html">&larr; Back to profile</a>
+        <p>&copy; 2026 Gio Duldoco. All rights reserved. [EOF]</p>
+    </footer>
+
+</body>
+</html>

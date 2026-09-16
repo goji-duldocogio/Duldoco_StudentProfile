@@ -1,0 +1,452 @@
+/* ============================================================
+   pages.css — PAGE-SPECIFIC STYLES
+   Blocks that only appear on one or two pages. Loaded after
+   main.css so it can build on the shared tokens.
+   ============================================================ */
+
+/* ============================================================
+   PROFILE (index.html)
+   ============================================================ */
+.hero {
+    text-align: center;
+    padding: 28px 18px 32px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.profile-img {
+    width: 118px;
+    height: 118px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.25);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 14px;
+    height: 14px;
+    background-color: var(--accent-green);
+    border: 2px solid var(--bg-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-green);
+}
+
+.hero-name {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+.hero-tagline {
+    color: var(--accent-cyan);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    margin-top: 6px;
+}
+
+.hero-intro {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    max-width: 58ch;
+    margin: 16px auto 0;
+}
+
+.terminal-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    background: rgba(0, 255, 102, 0.08);
+    border: 1px solid var(--border-dim);
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin-top: 18px;
+}
+
+.blink {
+    animation: blinker 1.1s steps(2, start) infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Homepage entry points to the other four pages */
+.page-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.page-link {
+    display: block;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-left: 3px solid var(--accent-green);
+    border-radius: 6px;
+    padding: 15px 17px;
+    text-decoration: none;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.page-link:hover,
+.page-link:focus {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 240, 255, 0.06);
+}
+
+.page-link-title {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.98rem;
+    color: var(--accent-green);
+    margin-bottom: 3px;
+}
+
+.page-link-desc {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.87rem;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   ABOUT (about.html)
+   ============================================================ */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.edu-item {
+    margin-bottom: 14px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border-dim);
+}
+
+.edu-item:last-child {
+    margin-bottom: 0;
+}
+
+.edu-degree {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.92rem;
+}
+
+.edu-school {
+    color: var(--text-dim);
+    font-size: 0.86rem;
+}
+
+.edu-years {
+    font-family: var(--font-mono);
+    color: var(--accent-green);
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.goals-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 6px;
+    padding: 18px;
+}
+
+.goals-panel h3 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--accent-cyan);
+    margin-bottom: 10px;
+}
+
+.goals-panel p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    max-width: 68ch;
+}
+
+/* ============================================================
+   SKILLS (skills.html)
+   ============================================================ */
+.skill-group {
+    margin-bottom: 26px;
+}
+
+.skill-group:last-child {
+    margin-bottom: 0;
+}
+
+.skill-group-title {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--accent-cyan);
+    margin-bottom: 12px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.skill-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-left: 3px solid var(--accent-green);
+    border-radius: 6px;
+    padding: 15px 17px;
+}
+
+.skill-card h3 {
+    font-family: var(--font-mono);
+    font-size: 0.94rem;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
+.skill-card p {
+    color: var(--text-dim);
+    font-size: 0.87rem;
+    line-height: 1.55;
+}
+
+/* ============================================================
+   PROJECTS (projects.html)
+   ============================================================ */
+.project {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.project:last-child {
+    margin-bottom: 0;
+}
+
+.project-title {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+}
+
+.project-thumb {
+    width: 100%;
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
+.project p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    max-width: 68ch;
+    margin-bottom: 12px;
+}
+
+.project-meta {
+    font-size: 0.87rem;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+
+.project-meta strong {
+    font-family: var(--font-mono);
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.tech-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tech-list li {
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+    color: var(--accent-cyan);
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.22);
+    border-radius: 3px;
+    padding: 3px 8px;
+}
+
+/* ============================================================
+   CONTACT (contact.html)
+   ============================================================ */
+.contact-list {
+    list-style: none;
+}
+
+/* Mobile: label stacked above the value so every row starts at the same
+   left edge, no matter how long the value is. */
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-dim);
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.contact-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-green);
+    flex: 0 0 96px;
+}
+
+.contact-value {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    /* Long emails and URLs must never push the layout sideways */
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.contact-value a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(0, 240, 255, 0.5);
+}
+
+.contact-value a:hover,
+.contact-value a:focus {
+    color: var(--accent-green);
+    border-bottom-color: var(--accent-green);
+}
+
+/* Contact form — layout only, not wired up (no JavaScript in this activity) */
+.contact-form {
+    display: grid;
+    gap: 14px;
+    max-width: 520px;
+}
+
+.form-field label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    background: rgba(5, 8, 17, 0.9);
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    padding: 10px 12px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    border-color: var(--accent-green);
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-button {
+    justify-self: start;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-green);
+    background: rgba(0, 255, 102, 0.08);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.form-button:hover,
+.form-button:focus {
+    background: rgba(0, 255, 102, 0.16);
+}
+
+.form-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS FOR PAGE BLOCKS
+   ============================================================ */
+@media (min-width: 640px) {
+    .page-links,
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .goals-panel {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 700px) {
+    /* Wider screens: label and value sit side by side */
+    .contact-item {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 16px;
+    }
+
+    .hero {
+        padding: 38px 20px 40px;
+    }
+
+    .hero-name {
+        font-size: 2.1rem;
+    }
+
+    .profile-img {
+        width: 132px;
+        height: 132px;
+    }
+
+    .project-thumb {
+        max-width: 460px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .hero-name {
+        font-size: 2.4rem;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
