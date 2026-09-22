@@ -9,15 +9,15 @@
 :root {
     /* Colour */
     --bg-dark: #050811;
-    --card-bg: rgba(10, 16, 31, 0.85);
-    --panel-bg: rgba(5, 8, 17, 0.7);
+    --card-bg: rgba(10, 16, 31, 0.92);
+    --panel-bg: rgba(5, 8, 17, 0.75);
     --border-dim: rgba(0, 255, 102, 0.22);
     --border-strong: rgba(0, 255, 102, 0.55);
     --accent-green: #00ff66;
     --accent-cyan: #00f0ff;
     --text-main: #e2e8f0;
-    --text-dim: #aab6c6;    /* lifted from #94a3b8 for better contrast */
-    --text-muted: #8a99ad;  /* lifted from #64748b for better contrast */
+    --text-dim: #aab6c6;
+    --text-muted: #8a99ad;
 
     /* Type */
     --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
@@ -53,9 +53,8 @@ body {
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.65;
-    /* Room for the fixed bottom tab bar on small screens */
     padding-bottom: calc(var(--tabbar-h) + 24px + env(safe-area-inset-bottom, 0px));
-    overflow-x: hidden;           /* guards against accidental sideways scroll */
+    overflow-x: hidden;
 }
 
 img {
@@ -68,7 +67,6 @@ a {
     color: var(--accent-cyan);
 }
 
-/* Visible keyboard focus everywhere — accessibility requirement */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -78,7 +76,6 @@ textarea:focus-visible {
     border-radius: 3px;
 }
 
-/* Skip link for keyboard / screen-reader users */
 .skip-link {
     position: absolute;
     left: -9999px;
@@ -104,7 +101,7 @@ textarea:focus-visible {
     padding: 24px 16px 0;
 }
 
-/* ---------- 4. TOP BAR (brand + desktop nav) ---------- */
+/* ---------- 4. TOP BAR ---------- */
 .topbar {
     position: sticky;
     top: 0;
@@ -112,24 +109,19 @@ textarea:focus-visible {
     background: rgba(5, 8, 17, 0.98);
     border-bottom: 1px solid var(--border-dim);
     font-family: var(--font-mono);
-    /* NOTE: no backdrop-filter here on small screens. A blur filter on an
-       ancestor becomes the containing block for position:fixed children,
-       which would pin the bottom tab bar inside the header instead of the
-       viewport. The blur is re-added at >= 700px, where the nav is static. */
 }
 
 .topbar-inner {
     max-width: var(--wrap);
     min-height: var(--navbar-h);
     margin: 0 auto;
-    padding: 10px 16px;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
 }
 
-/* The brand is also a permanent link back to the homepage */
 .brand {
     color: var(--accent-green);
     text-decoration: none;
@@ -149,11 +141,88 @@ textarea:focus-visible {
     color: var(--accent-cyan);
 }
 
-/* ---------- 5. MAIN NAVIGATION ----------
-   Same HTML on every page.
-   Small screens  -> fixed bottom tab bar (native app feel)
-   >= 700px       -> inline row inside the top bar
-   ------------------------------------------- */
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+/* TOP-RIGHT AVATAR WITH HOVER TOOLTIP POPUP */
+.avatar-tooltip-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.topbar-avatar-btn {
+    background: transparent;
+    border: 1px solid var(--border-dim);
+    border-radius: 50%;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.topbar-avatar-btn:hover,
+.topbar-avatar-btn:focus {
+    border-color: var(--accent-green);
+    background: rgba(0, 255, 102, 0.15);
+    box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+}
+
+.topbar-avatar-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--accent-green);
+}
+
+/* TOOLTIP POPUP STYLING ON HOVER */
+.tooltip-popup {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #ffffff;
+    color: #000000;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateY(-4px);
+    pointer-events: none;
+    z-index: 150;
+}
+
+/* Arrow indicator on top of tooltip */
+.tooltip-popup::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 12px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #ffffff transparent;
+}
+
+/* Show tooltip when hovering over avatar or button */
+.avatar-tooltip-wrapper:hover .tooltip-popup,
+.topbar-avatar-btn:focus + .tooltip-popup {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- 5. MAIN NAVIGATION ---------- */
 .mainnav {
     position: fixed;
     left: 0;
@@ -202,7 +271,6 @@ textarea:focus-visible {
     background: rgba(0, 255, 102, 0.08);
 }
 
-/* Current page marker — tells the user where they are */
 .nav-list a[aria-current="page"] {
     color: var(--accent-green);
     background: rgba(0, 255, 102, 0.1);
@@ -218,6 +286,13 @@ textarea:focus-visible {
     padding: 22px 18px;
     margin-bottom: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.profile-img {
+    width: 132px;
+    height: 132px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .page-title {
@@ -265,7 +340,7 @@ textarea:focus-visible {
 .body-text p {
     color: var(--text-dim);
     font-size: 0.95rem;
-    max-width: 68ch;          /* comfortable reading line length */
+    max-width: 68ch;
     margin-bottom: 14px;
 }
 
@@ -273,7 +348,6 @@ textarea:focus-visible {
     margin-bottom: 0;
 }
 
-/* Terminal-style bullet list */
 .cyber-list {
     list-style: none;
     color: var(--text-dim);
@@ -298,7 +372,220 @@ textarea:focus-visible {
     font-family: var(--font-mono);
 }
 
-/* ---------- 7. FOOTER ---------- */
+/* ---------- 7. POPUP MODAL STYLES ---------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 8, 17, 0.85);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 16px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.25);
+    transform: scale(0.92);
+    transition: transform 0.25s ease;
+    margin-bottom: 0;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header .section-title {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--accent-green);
+}
+
+/* ---------- 8. FORM & BUTTON STYLES ---------- */
+.skills-summary {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 10px 14px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+}
+
+.skills-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    margin-bottom: 4px;
+}
+
+.cyber-btn {
+    background: transparent;
+    color: var(--accent-green);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.cyber-btn:hover,
+.cyber-btn:focus {
+    background: rgba(0, 255, 102, 0.15);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+}
+
+.cyber-btn.secondary {
+    color: var(--text-dim);
+    border-color: var(--border-dim);
+}
+
+.cyber-btn.secondary:hover,
+.cyber-btn.secondary:focus {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+.cyber-form {
+    margin-top: 15px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+    margin-bottom: 6px;
+}
+
+.cyber-input {
+    width: 100%;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea.cyber-input {
+    resize: vertical;
+}
+
+.cyber-input:focus {
+    outline: none;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 8px rgba(0, 255, 102, 0.25);
+}
+
+/* Profile Picture Edit Controls */
+.avatar-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.profile-img-preview {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+}
+
+.cyber-file-input {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+}
+
+.cyber-file-input::file-selector-button {
+    background: transparent;
+    color: var(--accent-cyan);
+    border: 1px solid var(--border-dim);
+    border-radius: var(--radius);
+    padding: 8px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+}
+
+.cyber-file-input::file-selector-button:hover {
+    background: rgba(0, 240, 255, 0.15);
+    color: #ffffff;
+    border-color: var(--accent-cyan);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.error-text {
+    font-family: var(--font-mono);
+    color: #ff5555;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    min-height: 1.2em;
+}
+
+/* ---------- 9. FOOTER ---------- */
 .site-footer {
     max-width: var(--wrap);
     margin: 28px auto 0;
@@ -310,36 +597,18 @@ textarea:focus-visible {
     color: var(--text-muted);
 }
 
-.site-footer .home-link {
-    display: inline-block;
-    margin-bottom: 8px;
-    color: var(--accent-green);
-    text-decoration: none;
-    padding: 6px 12px;
-    border: 1px solid var(--border-dim);
-    border-radius: 4px;
-}
-
-.site-footer .home-link:hover,
-.site-footer .home-link:focus {
-    background: rgba(0, 255, 102, 0.1);
-    border-color: var(--border-strong);
-}
-
-/* ---------- 8. RESPONSIVE: TABLET (>= 700px) ---------- */
+/* ---------- 10. RESPONSIVE: TABLET (>= 700px) ---------- */
 @media (min-width: 700px) {
     body {
-        padding-bottom: 32px;     /* tab bar is gone, reclaim the space */
+        padding-bottom: 32px;
     }
 
-    /* Safe here: the nav is no longer position:fixed at this width */
     .topbar {
         background: rgba(5, 8, 17, 0.96);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
     }
 
-    /* Navigation moves up into the top bar */
     .mainnav {
         position: static;
         background: none;
@@ -370,7 +639,6 @@ textarea:focus-visible {
         box-shadow: inset 0 0 0 1px var(--border-strong);
     }
 
-    /* Terminal path prefix — only where there is room for it */
     .nav-list a::before {
         content: "~/";
         color: var(--text-muted);
@@ -401,7 +669,7 @@ textarea:focus-visible {
     }
 }
 
-/* ---------- 9. RESPONSIVE: DESKTOP (>= 1000px) ---------- */
+/* ---------- 11. RESPONSIVE: DESKTOP (>= 1000px) ---------- */
 @media (min-width: 1000px) {
     .container {
         padding: 38px 24px 0;
@@ -416,7 +684,7 @@ textarea:focus-visible {
     }
 }
 
-/* ---------- 10. MOTION PREFERENCES ---------- */
+/* ---------- 12. MOTION PREFERENCES ---------- */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

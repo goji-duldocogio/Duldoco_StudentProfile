@@ -18,42 +18,60 @@
 
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <!-- ===== HEADER + NAVIGATION (identical on all five pages) ===== -->
+    <!-- ===== HEADER + NAVIGATION ===== -->
     <header class="topbar">
         <div class="topbar-inner">
             <a class="brand" href="index.html">
                 <span class="prompt-symbol">&gt;_</span> root@gio-duldoco:~#
             </a>
-            <nav class="mainnav" aria-label="Main navigation">
-                <ul class="nav-list">
-                    <li><a href="index.html" aria-current="page">profile</a></li>
-                    <li><a href="about.html">about</a></li>
-                    <li><a href="skills.html">skills</a></li>
-                    <li><a href="projects.html">projects</a></li>
-                    <li><a href="contact.html">contact</a></li>
-                </ul>
-            </nav>
+            
+            <div class="topbar-right">
+                <nav class="mainnav" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="index.html" aria-current="page">profile</a></li>
+                        <li><a href="about.html">about</a></li>
+                        <li><a href="skills.html">skills</a></li>
+                        <li><a href="projects.html">projects</a></li>
+                        <li><a href="contact.html">contact</a></li>
+                    </ul>
+                </nav>
+
+                <!-- TOP-RIGHT PROFILE AVATAR WITH HOVER TOOLTIP -->
+                <div class="avatar-tooltip-wrapper">
+                    <button type="button" id="topbar-profile-btn" class="topbar-avatar-btn" aria-label="Edit Profile">
+                        <img id="topbar-avatar" src="img/profile.jpg" alt="Profile avatar" class="topbar-avatar-img">
+                    </button>
+                    <span class="tooltip-popup">Edit Profile</span>
+                </div>
+            </div>
         </div>
     </header>
 
     <main id="main" class="container">
 
-        <!-- ===== HERO ===== -->
+        <!-- ===== HERO / PROFILE CARD ===== -->
         <section class="cyber-card hero">
-            <div class="avatar-wrapper">
-                <img src="img/profile.jpg" alt="Portrait of Gio Duldoco" class="profile-img" width="132" height="132">
-                <span class="status-indicator" aria-hidden="true"></span>
+
+            <!-- PROFILE DISPLAY MODE -->
+            <div id="profile-view">
+                <div class="avatar-wrapper">
+                    <img id="display-avatar" src="img/profile.jpg" alt="Portrait of Gio Duldoco" class="profile-img" width="132" height="132">
+                    <span class="status-indicator" aria-hidden="true"></span>
+                </div>
+                <h1 class="hero-name" id="display-name">Gio Carlo E. Duldoco</h1>
+                <p class="hero-tagline"><span id="display-course">Bachelor of Science in Information Technology</span> — <span id="display-year">2nd year</span></p>
+                <p class="hero-intro" id="display-about">I am a 2nd Year BSIT student</p>
+                
+                <div class="skills-summary">
+                    <p class="skills-title"><span class="accent">&gt;</span> Skills:</p>
+                    <p class="hero-intro" id="display-skills">Volleyball Athlete, Java and Python Enthusiast, Cooking</p>
+                </div>
+
+                <p class="terminal-badge">
+                    <span class="blink" aria-hidden="true">&gt;</span> system status: online
+                </p>
             </div>
-            <h1 class="hero-name">Gio Duldoco</h1>
-            <p class="hero-tagline">IT student &amp; mobile app developer</p>
-            <p class="hero-intro">
-                Third-year Information Technology student at Xavier University Ateneo de Cagayan.
-                I build cross-platform mobile apps with Apache Cordova and care about clean,
-                responsive interfaces that work on any screen.
-            </p>
-            <p class="terminal-badge">
-                <span class="blink" aria-hidden="true">&gt;</span> system status: online
-            </p>
+
         </section>
 
         <!-- ===== ENTRY POINTS TO THE OTHER PAGES ===== -->
@@ -85,10 +103,65 @@
 
     </main>
 
-    <!-- ===== FOOTER (identical on all five pages) ===== -->
+    <!-- ===== EDIT PROFILE POPUP MODAL ===== -->
+    <div id="edit-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content cyber-card" role="dialog" aria-labelledby="modal-title">
+            <div class="modal-header">
+                <h2 id="modal-title" class="section-title"><span class="accent">&gt;</span> edit_profile.sh</h2>
+                <button type="button" id="close-modal-btn" class="modal-close" aria-label="Close dialog">&times;</button>
+            </div>
+            
+            <p id="error-message" class="error-text"></p>
+
+            <form id="profile-form" class="cyber-form">
+                
+                <!-- Profile Picture Edit / Upload -->
+                <div class="form-group">
+                    <label for="input-avatar">&gt; Profile Picture:</label>
+                    <div class="avatar-upload-container">
+                        <img id="avatar-preview" src="img/profile.jpg" alt="Profile Preview" class="profile-img-preview">
+                        <input type="file" id="input-avatar" accept="image/*" class="cyber-file-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-name">&gt; Full Name:</label>
+                    <input type="text" id="input-name" class="cyber-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-course">&gt; Course:</label>
+                    <input type="text" id="input-course" class="cyber-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-year">&gt; Year Level:</label>
+                    <input type="text" id="input-year" class="cyber-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-about">&gt; About Me:</label>
+                    <textarea id="input-about" rows="4" class="cyber-input"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-skills">&gt; Skills (comma separated):</label>
+                    <input type="text" id="input-skills" class="cyber-input">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="save-btn" class="cyber-btn">&gt; Save Changes</button>
+                    <button type="button" id="cancel-btn" class="cyber-btn secondary">&gt; Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
         <p>&copy; 2026 Gio Duldoco. All rights reserved. [EOF]</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

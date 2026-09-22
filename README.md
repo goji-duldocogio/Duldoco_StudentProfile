@@ -2,137 +2,102 @@
 
 ## 1. Project Description
 
-A multi-page Student Profile application built with HTML, CSS and Apache Cordova.
+A multi-page Student Profile application built with HTML, CSS, JavaScript, and Apache Cordova.
 
-The application presents my personal and academic information as a small mobile app. It started in
-Activity 3 as a single responsive page and was reorganised in Activity 4 into five separate pages
-connected by a shared navigation bar. It runs as a native Android application through Cordova and
-uses no JavaScript — all navigation is handled with standard HTML links.
+Originally developed as a static multi-page app, Activity 5 introduces dynamic profile editing, client-side form validation, live avatar photo previews, and local data persistence via `localStorage`. The application retains its responsive cyber/terminal aesthetic while providing interactive, mobile-ready profile management.
+
+---
 
 ## 2. Application Pages
 
 | Page | File | Purpose |
 | --- | --- | --- |
-| **Profile** | `www/index.html` | The homepage and main entry point. Shows my photo, name, tagline and a short introduction, then links out to the four other sections so a visitor can see at a glance what the app contains. |
-| **About** | `www/about.html` | The detailed personal section. Contains two paragraphs introducing myself, plus panels for my interests, my educational background and my goals and aspirations. |
-| **Skills** | `www/skills.html` | Lists my technical skills with a short description of each, organised into three categories: programming and development, web design and front-end, and tools and workflow. |
-| **Projects** | `www/projects.html` | Showcases three projects I have worked on. Each entry gives the project title, a short description, my role or contribution, and the technologies used. |
-| **Contact** | `www/contact.html` | Contains my contact information — email, GitHub, professional profile, university and location — along with a contact form layout. The form is a layout preview only and is not functional in this activity. |
+| **Profile** | `www/index.html` | The main landing page. Displays personal info, course, year level, bio, and skills summary, with quick links to other sections and top-bar profile editing access. |
+| **About** | `www/about.html` | The personal background section. Features personal bio paragraphs along with panels for interests, education, and future aspirations. |
+| **Skills** | `www/skills.html` | Categorized showcase of technical skills across programming/development, web design, and tools/workflows. |
+| **Projects** | `www/projects.html` | Portfolio displaying key projects, descriptions, contributions, and tech stacks used. |
+| **Contact** | `www/contact.html` | Displays contact information (email, GitHub, location) and a sample contact form layout. |
 
-## 3. Navigation
+---
 
-Navigation is implemented entirely with **standard HTML links** (`<a href="about.html">`). No
-JavaScript is used to load pages, generate the menu or handle routing.
+## 3. Profile Editing
 
-The same navigation markup appears on all five pages, so a user can move directly from any page to
-any other page without going through the homepage first:
+The application includes an interactive modal interface (`edit_profile.sh`) that allows users to modify their profile information directly on the homepage. 
 
-```
-Profile ←→ About ←→ Skills ←→ Projects ←→ Contact
-```
+Users trigger the modal by hovering over or clicking the profile picture icon in the top-right navigation bar (which displays an "Edit Profile" popup) or by clicking the main profile picture.
 
-There are three separate ways to get back to the homepage from any page:
+### Modifiable Information:
+- **Profile Picture**: Image upload via local file input with real-time preview.
+- **Full Name**: Student's display name.
+- **Course**: Academic degree program.
+- **Year Level**: Current academic year.
+- **About Me**: Brief personal bio.
+- **Skills**: Comma-separated list of technical capabilities and hobbies.
 
-1. The **Profile** item in the navigation bar
-2. The **`>_ root@gio-duldoco:~#`** brand in the header, which is a link to `index.html`
-3. The **Back to profile** button in the footer
+---
 
-The link for the page you are currently on is marked with `aria-current="page"`. It is highlighted
-in green with a coloured edge, so the user can always tell which section they are in.
+## 4. JavaScript Functionality
 
-## 4. Responsive Design
+All dynamic interactions are handled in `script.js`:
 
-All five pages are responsive, not just the homepage. The layout was built mobile-first — the base
-CSS targets the smallest screen and media queries add complexity as the screen grows.
+- **Form Handling:** Listens for user actions to open and close the modal dialog, populates form inputs with current DOM values on open, and processes local file selections via the FileReader API for real-time photo previewing.
+- **Validation:** Implements client-side checks before saving. Verifies that no required fields are left empty (`!nameVal || !courseVal || ...`). If any input is missing, an error message (`[ERROR] All fields are required. Please complete the form.`) is displayed inside the modal without closing it.
+- **Profile Updates:** Reads newly validated inputs and dynamically updates the corresponding DOM elements on the page (`#display-name`, `#display-course`, `#display-year`, `#display-about`, `#display-skills`, `#display-avatar`, and `#topbar-avatar`).
+- **Save:** Triggered by the "Save Changes" button. Validates input values, serializes the updated profile into JSON, stores the data in `localStorage`, updates the UI, and closes the modal window.
+- **Cancel:** Triggered by the "Cancel" button, the modal close (`×`) button, clicking outside the modal overlay, or pressing the `Escape` key. Reverts pending changes and closes the overlay without altering saved data.
 
-| Screen | Width | Layout |
-| --- | --- | --- |
-| **Mobile** | under 640px | Single-column content. Navigation sits at the bottom of the screen as a fixed tab bar, within easy thumb reach. |
-| **Tablet** | 640px and above | Skills, page links and the About panels move to two columns. At 700px the navigation moves up into the top bar. |
-| **Desktop** | 1000px and above | Skills expand to three columns, spacing and type sizes increase, content is capped at 900px so lines stay readable. |
+---
 
-The pages were checked at 320px, 360px, 768px, 1280px and 1440px. At every width there is no
-horizontal scrolling, no overlapping elements, no cut-off text and no broken navigation. Long values
-such as email addresses and URLs are set to wrap rather than push the layout sideways.
+## 5. Local Data Storage
 
-## 5. UI/UX Principles Applied
+The application uses `localStorage` to persist user profile modifications across browser refreshes and application restarts:
 
-The UI/UX principles from Module 4 were applied across all five pages as follows.
+- **Storage (`setItem`):** Upon clicking "Save Changes", the profile object containing the avatar Data URL, name, course, year level, about bio, and skills list is converted into a JSON string using `JSON.stringify()` and stored under the key `'studentProfile'`.
+- **Retrieval (`getItem`):** When the page finishes loading (`DOMContentLoaded`), `loadProfileData()` checks if `'studentProfile'` exists in `localStorage`. If found, it parses the JSON string using `JSON.parse()` and populates the profile card and header avatar with the saved values. If no saved data exists, default content is displayed.
 
-**User-centered design.** The structure was decided by asking what a visitor needs rather than what
-I wanted to build. Someone landing on the profile page usually wants to know who I am and then jump
-to one specific thing, so the homepage gives a short introduction and then four clearly labelled
-entry points instead of forcing the visitor to scroll through everything.
+---
 
-**Simplicity.** Each page does one job. Splitting the single Activity 3 page into five pages removed
-the long scroll and reduced how much is on screen at once. There are no decorative extras, no
-unnecessary controls, and the only actions available are navigation links — which keeps the number
-of possible actions per screen low.
+## 6. Responsive Design
 
-**Consistency.** Every page uses the same header, the same navigation, the same footer, the same
-colour scheme, the same two typefaces (Fira Code for headings and interface text, Inter for body
-text) and the same card and panel components. This is enforced in code: `main.css` holds the shared
-styles and design tokens, and every page loads it, so a change applies everywhere at once. A user who
-learns one page already knows how the other four work.
+The layout uses a mobile-first approach with standard media queries:
 
-**Visual hierarchy.** Size, colour, position and spacing are used to signal what matters most. Page
-titles are the largest text and use the accent green marker; section headings sit below them in cyan;
-supporting body text is smaller and in a dimmer grey. On the homepage the profile photo and name are
-the first thing seen, which establishes what the app is about before anything else.
+- **Mobile (under 640px):** Single-column layout. Navigation displays at the bottom of the screen as a fixed tab bar within easy thumb reach.
+- **Tablet (640px to 999px):** Content expands into multi-column panel grids. At 700px, navigation moves up into the main header bar.
+- **Desktop (1000px and above):** Expands to a multi-column design capped at a maximum width of `900px` for optimal readability, with scaled spacing and responsive modal overlays.
 
-**Feedback.** Since this activity uses no JavaScript, feedback is handled through CSS states. Links
-change colour and background on hover and on focus, form fields highlight their border when active,
-and the current page is permanently marked in the navigation so the user always knows where they
-are. Buttons and links visibly respond to being interacted with rather than staying static.
+---
 
-**Readability and accessibility.** Body text is set at 16px with a line height of 1.65 and body
-paragraphs are limited to about 68 characters per line so they stay comfortable to read. All text
-colours were checked against the dark background: the lowest ratio in the app is 6.9:1, above the
-4.5:1 WCAG AA minimum. Beyond contrast, the application uses semantic headings in order, descriptive
-alternative text on every image, labels attached to every form field, a visible keyboard focus
-outline, a skip-to-content link, and a `prefers-reduced-motion` rule that disables animation for
-users who ask for it.
-
-## 6. How to Run
+## 7. How to Run
 
 ### Requirements
-
 - Node.js 20.17.0 or later
 - Java JDK 17
 - Android Studio with SDK Platform 36 and Build Tools 36.0.0
 - `JAVA_HOME` and `ANDROID_HOME` environment variables set
 - Apache Cordova CLI (`npm install -g cordova`)
 
-### Build and run on Android
+### Build and Run on Android
 
 ```bash
-# 1. Install project dependencies
+# 1. Install dependencies
 npm install
 
-# 2. Add the Android platform
+# 2. Add Android platform
 cordova platform add android
 
-# 3. Confirm the environment is ready
+# 3. Check environment prerequisites
 cordova requirements
 
-# 4. Build the application
+# 4. Build application
 cordova build android
 
-# 5. Run on a started emulator or connected device
+# 5. Run on device or emulator
 cordova run android
-```
-
-### Preview in a browser
-
-```bash
-cordova platform add browser
-cordova run browser
-```
 
 ## 7. Application Screenshots
 
 ### Profile (Homepage)
-![Profile Page](screenshots/profile.png)
+![Profile Page](screenshots/studentprofile.png)
 
 ### About
 ![About Page](screenshots/about.png)
@@ -151,3 +116,11 @@ cordova run browser
 | Desktop | Tablet | Mobile |
 | --- | --- | --- |
 | ![Desktop View](screenshots/desktop.png) | ![Tablet View](screenshots/tablet.png) | ![Mobile View](screenshots/mobile.png) |
+
+# Edit and Update Profile
+
+### Edit Profile
+![Edit Profile](screenshots/editprofile.png)
+
+### Update Profile
+![Update Profile](screenshots/updatedprofile.png)
