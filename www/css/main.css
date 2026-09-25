@@ -1,13 +1,4 @@
-/* ============================================================
-   main.css — SHARED STYLES
-   Loaded by every page. Contains design tokens, base typography,
-   the navigation, the page header, cards and the footer.
-   Page-specific blocks live in pages.css.
-   ============================================================ */
-
-/* ---------- 1. DESIGN TOKENS ---------- */
 :root {
-    /* Colour */
     --bg-dark: #050811;
     --card-bg: rgba(10, 16, 31, 0.92);
     --panel-bg: rgba(5, 8, 17, 0.75);
@@ -15,31 +6,23 @@
     --border-strong: rgba(0, 255, 102, 0.55);
     --accent-green: #00ff66;
     --accent-cyan: #00f0ff;
+    --accent-red: #ff5555;
     --text-main: #e2e8f0;
     --text-dim: #aab6c6;
     --text-muted: #8a99ad;
 
-    /* Type */
     --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* Layout */
     --wrap: 900px;
-    --gap: 16px;
-    --radius: 8px;
     --navbar-h: 56px;
     --tabbar-h: 62px;
 }
 
-/* ---------- 2. RESET & BASE ---------- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-html {
-    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -63,9 +46,7 @@ img {
     display: block;
 }
 
-a {
-    color: var(--accent-cyan);
-}
+a { color: var(--accent-cyan); }
 
 a:focus-visible,
 button:focus-visible,
@@ -73,7 +54,6 @@ input:focus-visible,
 textarea:focus-visible {
     outline: 2px solid var(--accent-cyan);
     outline-offset: 2px;
-    border-radius: 3px;
 }
 
 .skip-link {
@@ -88,12 +68,8 @@ textarea:focus-visible {
     z-index: 999;
 }
 
-.skip-link:focus {
-    left: 8px;
-    top: 8px;
-}
+.skip-link:focus { left: 8px; top: 8px; }
 
-/* ---------- 3. LAYOUT WRAPPER ---------- */
 .container {
     width: 100%;
     max-width: var(--wrap);
@@ -101,7 +77,7 @@ textarea:focus-visible {
     padding: 24px 16px 0;
 }
 
-/* ---------- 4. TOP BAR ---------- */
+/* ===== TOP BAR ===== */
 .topbar {
     position: sticky;
     top: 0;
@@ -127,19 +103,9 @@ textarea:focus-visible {
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.brand:hover,
-.brand:focus {
-    color: var(--accent-cyan);
-}
-
-.prompt-symbol {
-    color: var(--accent-cyan);
-}
+.prompt-symbol { color: var(--accent-cyan); }
 
 .topbar-right {
     display: flex;
@@ -147,30 +113,15 @@ textarea:focus-visible {
     gap: 14px;
 }
 
-/* TOP-RIGHT AVATAR WITH HOVER TOOLTIP POPUP */
-.avatar-tooltip-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-}
-
 .topbar-avatar-btn {
     background: transparent;
     border: 1px solid var(--border-dim);
     border-radius: 50%;
     padding: 2px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.topbar-avatar-btn:hover,
-.topbar-avatar-btn:focus {
-    border-color: var(--accent-green);
-    background: rgba(0, 255, 102, 0.15);
-    box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
 }
 
 .topbar-avatar-img {
@@ -181,48 +132,40 @@ textarea:focus-visible {
     border: 1px solid var(--accent-green);
 }
 
-/* TOOLTIP POPUP STYLING ON HOVER */
+/* FIXED TOOLTIP STYLING */
+.avatar-tooltip-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
 .tooltip-popup {
-    visibility: hidden;
-    opacity: 0;
     position: absolute;
-    top: calc(100% + 8px);
+    top: 115%;
     right: 0;
-    background: #ffffff;
-    color: #000000;
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 3px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    color: var(--accent-green);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 4px 8px;
+    border-radius: 4px;
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: translateY(-4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
     pointer-events: none;
-    z-index: 150;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Arrow indicator on top of tooltip */
-.tooltip-popup::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    right: 12px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent #ffffff transparent;
-}
-
-/* Show tooltip when hovering over avatar or button */
 .avatar-tooltip-wrapper:hover .tooltip-popup,
 .topbar-avatar-btn:focus + .tooltip-popup {
-    visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+    visibility: visible;
 }
 
-/* ---------- 5. MAIN NAVIGATION ---------- */
+/* ===== NAVIGATION ===== */
 .mainnav {
     position: fixed;
     left: 0;
@@ -230,62 +173,42 @@ textarea:focus-visible {
     bottom: 0;
     z-index: 200;
     background: rgba(5, 8, 17, 0.97);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
     border-top: 1px solid var(--border-dim);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .nav-list {
     list-style: none;
     display: flex;
-    align-items: stretch;
     max-width: var(--wrap);
     margin: 0 auto;
 }
 
-.nav-list li {
-    flex: 1 1 0;
-    min-width: 0;
-}
+.nav-list li { flex: 1; }
 
 .nav-list a {
     display: flex;
     align-items: center;
     justify-content: center;
     height: var(--tabbar-h);
-    padding: 4px 2px;
     font-family: var(--font-mono);
     font-size: 0.66rem;
-    letter-spacing: 0.02em;
     color: var(--text-dim);
     text-decoration: none;
-    text-align: center;
-    border-top: 2px solid transparent;
-    transition: color 0.18s ease, background-color 0.18s ease;
-}
-
-.nav-list a:hover,
-.nav-list a:focus {
-    color: var(--accent-green);
-    background: rgba(0, 255, 102, 0.08);
 }
 
 .nav-list a[aria-current="page"] {
     color: var(--accent-green);
     background: rgba(0, 255, 102, 0.1);
-    border-top-color: var(--accent-green);
-    font-weight: 700;
+    border-top: 2px solid var(--accent-green);
 }
 
-/* ---------- 6. SHARED CARD / SECTION COMPONENTS ---------- */
+/* ===== CARDS & PROFILE ===== */
 .cyber-card {
     background: var(--card-bg);
     border: 1px solid var(--border-dim);
-    border-radius: var(--radius);
+    border-radius: 8px;
     padding: 22px 18px;
     margin-bottom: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .profile-img {
@@ -293,21 +216,43 @@ textarea:focus-visible {
     height: 132px;
     object-fit: cover;
     border-radius: 50%;
+    border: 2px solid var(--accent-green);
 }
 
-.page-title {
+.hero { text-align: center; }
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
+    background-color: var(--accent-green);
+    border: 2px solid var(--bg-dark);
+    border-radius: 50%;
+}
+
+.hero-name {
     font-family: var(--font-mono);
-    font-size: 1.35rem;
-    line-height: 1.3;
-    color: var(--text-main);
-    word-break: break-word;
+    font-size: 1.6rem;
+    margin-bottom: 4px;
 }
 
-.page-subtitle {
-    color: var(--text-muted);
+.hero-tagline {
     font-size: 0.9rem;
-    margin-top: 4px;
-    margin-bottom: 20px;
+    color: var(--accent-cyan);
+    margin-bottom: 12px;
+}
+
+.hero-intro {
+    font-size: 0.9rem;
+    color: var(--text-main);
 }
 
 .section-title {
@@ -319,60 +264,71 @@ textarea:focus-visible {
     border-bottom: 1px solid var(--border-dim);
 }
 
-.accent {
-    color: var(--accent-green);
+.accent { color: var(--accent-green); }
+
+.skills-summary {
+    margin: 15px 0;
+    padding: 10px 14px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
 }
 
-.panel {
+.skills-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-cyan);
+}
+
+.terminal-badge {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-green);
+    margin-top: 10px;
+}
+
+.blink { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+/* ===== PAGE LINKS GRID ===== */
+.page-links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .page-links { grid-template-columns: 1fr 1fr; }
+}
+
+.page-link {
+    display: block;
     background: var(--panel-bg);
     border: 1px solid var(--border-dim);
     border-radius: 6px;
-    padding: 18px;
+    padding: 12px 14px;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
 }
 
-.panel h3 {
+.page-link:hover {
+    border-color: var(--accent-green);
+}
+
+.page-link-title {
+    display: block;
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    color: var(--accent-cyan);
-    margin-bottom: 12px;
-}
-
-.body-text p {
-    color: var(--text-dim);
-    font-size: 0.95rem;
-    max-width: 68ch;
-    margin-bottom: 14px;
-}
-
-.body-text p:last-child {
-    margin-bottom: 0;
-}
-
-.cyber-list {
-    list-style: none;
-    color: var(--text-dim);
-    font-size: 0.9rem;
-}
-
-.cyber-list li {
-    margin-bottom: 7px;
-    position: relative;
-    padding-left: 15px;
-}
-
-.cyber-list li:last-child {
-    margin-bottom: 0;
-}
-
-.cyber-list li::before {
-    content: ">";
-    position: absolute;
-    left: 0;
+    font-weight: 600;
     color: var(--accent-green);
-    font-family: var(--font-mono);
+    margin-bottom: 4px;
 }
 
-/* ---------- 7. POPUP MODAL STYLES ---------- */
+.page-link-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+}
+
+/* ===== MODAL DIALOG ===== */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -380,8 +336,6 @@ textarea:focus-visible {
     width: 100vw;
     height: 100vh;
     background: rgba(5, 8, 17, 0.85);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -403,14 +357,6 @@ textarea:focus-visible {
     max-height: 90vh;
     overflow-y: auto;
     border: 1px solid var(--border-strong);
-    box-shadow: 0 0 30px rgba(0, 255, 102, 0.25);
-    transform: scale(0.92);
-    transition: transform 0.25s ease;
-    margin-bottom: 0;
-}
-
-.modal-overlay.active .modal-content {
-    transform: scale(1);
 }
 
 .modal-header {
@@ -419,84 +365,35 @@ textarea:focus-visible {
     justify-content: space-between;
 }
 
-.modal-header .section-title {
-    margin-bottom: 0;
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
 .modal-close {
     background: transparent;
     border: none;
     color: var(--text-muted);
     font-size: 1.8rem;
-    line-height: 1;
     cursor: pointer;
-    padding: 0 4px;
-    transition: color 0.2s ease;
 }
 
-.modal-close:hover,
-.modal-close:focus {
-    color: var(--accent-green);
-}
-
-/* ---------- 8. FORM & BUTTON STYLES ---------- */
-.skills-summary {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    padding: 10px 14px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius);
-}
-
-.skills-title {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--accent-cyan);
-    margin-bottom: 4px;
-}
-
+/* ===== FORMS & BUTTONS ===== */
 .cyber-btn {
     background: transparent;
     color: var(--accent-green);
     border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-    padding: 10px 18px;
+    border-radius: 8px;
+    padding: 10px 16px;
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-block;
 }
 
-.cyber-btn:hover,
-.cyber-btn:focus {
+.cyber-btn:hover {
     background: rgba(0, 255, 102, 0.15);
     color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
 }
 
-.cyber-btn.secondary {
-    color: var(--text-dim);
-    border-color: var(--border-dim);
-}
+.cyber-btn.secondary { color: var(--text-dim); border-color: var(--border-dim); }
+.cyber-btn.danger { color: var(--accent-red); border-color: rgba(255, 85, 85, 0.4); }
 
-.cyber-btn.secondary:hover,
-.cyber-btn.secondary:focus {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-main);
-}
-
-.cyber-form {
-    margin-top: 15px;
-}
-
-.form-group {
-    margin-bottom: 16px;
-}
+.form-group { margin-bottom: 16px; }
 
 .form-group label {
     display: block;
@@ -510,25 +407,12 @@ textarea:focus-visible {
     width: 100%;
     background: var(--panel-bg);
     border: 1px solid var(--border-dim);
-    border-radius: var(--radius);
+    border-radius: 8px;
     color: var(--text-main);
     font-family: var(--font-sans);
-    font-size: 0.95rem;
     padding: 10px 12px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-textarea.cyber-input {
-    resize: vertical;
-}
-
-.cyber-input:focus {
-    outline: none;
-    border-color: var(--accent-green);
-    box-shadow: 0 0 8px rgba(0, 255, 102, 0.25);
-}
-
-/* Profile Picture Edit Controls */
 .avatar-upload-container {
     display: flex;
     align-items: center;
@@ -536,56 +420,41 @@ textarea.cyber-input {
     margin-top: 8px;
 }
 
+.avatar-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .profile-img-preview {
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid var(--accent-green);
-    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+    flex-shrink: 0;
 }
 
 .cyber-file-input {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--text-dim);
-}
-
-.cyber-file-input::file-selector-button {
-    background: transparent;
-    color: var(--accent-cyan);
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius);
-    padding: 8px 14px;
-    font-family: var(--font-mono);
     font-size: 0.8rem;
-    cursor: pointer;
-    margin-right: 12px;
-    transition: all 0.2s ease;
-}
-
-.cyber-file-input::file-selector-button:hover {
-    background: rgba(0, 240, 255, 0.15);
-    color: #ffffff;
-    border-color: var(--accent-cyan);
+    color: var(--text-dim);
 }
 
 .form-actions {
     display: flex;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-top: 20px;
 }
 
 .error-text {
     font-family: var(--font-mono);
-    color: #ff5555;
+    color: var(--accent-red);
     font-size: 0.85rem;
-    margin-top: 10px;
-    margin-bottom: 12px;
-    min-height: 1.2em;
+    margin: 10px 0;
 }
 
-/* ---------- 9. FOOTER ---------- */
 .site-footer {
     max-width: var(--wrap);
     margin: 28px auto 0;
@@ -597,100 +466,8 @@ textarea.cyber-input {
     color: var(--text-muted);
 }
 
-/* ---------- 10. RESPONSIVE: TABLET (>= 700px) ---------- */
 @media (min-width: 700px) {
-    body {
-        padding-bottom: 32px;
-    }
-
-    .topbar {
-        background: rgba(5, 8, 17, 0.96);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-    }
-
-    .mainnav {
-        position: static;
-        background: none;
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-        border-top: none;
-        padding-bottom: 0;
-    }
-
-    .nav-list {
-        gap: 4px;
-    }
-
-    .nav-list li {
-        flex: 0 0 auto;
-    }
-
-    .nav-list a {
-        height: auto;
-        padding: 7px 11px;
-        font-size: 0.78rem;
-        border-top: none;
-        border-radius: 4px;
-    }
-
-    .nav-list a[aria-current="page"] {
-        border-top: none;
-        box-shadow: inset 0 0 0 1px var(--border-strong);
-    }
-
-    .nav-list a::before {
-        content: "~/";
-        color: var(--text-muted);
-    }
-
-    .nav-list a[aria-current="page"]::before {
-        color: var(--accent-green);
-    }
-
-    .brand {
-        font-size: 0.9rem;
-    }
-
-    .container {
-        padding: 30px 24px 0;
-    }
-
-    .cyber-card {
-        padding: 26px 24px;
-    }
-
-    .page-title {
-        font-size: 1.6rem;
-    }
-
-    .section-title {
-        font-size: 1.15rem;
-    }
-}
-
-/* ---------- 11. RESPONSIVE: DESKTOP (>= 1000px) ---------- */
-@media (min-width: 1000px) {
-    .container {
-        padding: 38px 24px 0;
-    }
-
-    .cyber-card {
-        padding: 32px;
-    }
-
-    .page-title {
-        font-size: 1.85rem;
-    }
-}
-
-/* ---------- 12. MOTION PREFERENCES ---------- */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-    }
+    .mainnav { position: static; background: none; border-top: none; }
+    .nav-list { gap: 4px; }
+    .nav-list a { height: auto; padding: 7px 11px; }
 }

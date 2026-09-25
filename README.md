@@ -1,100 +1,79 @@
-# Duldoco_StudentProfile
+# Student Profile Application
 
 ## 1. Project Description
-
-A multi-page Student Profile application built with HTML, CSS, JavaScript, and Apache Cordova.
-
-Originally developed as a static multi-page app, Activity 5 introduces dynamic profile editing, client-side form validation, live avatar photo previews, and local data persistence via `localStorage`. The application retains its responsive cyber/terminal aesthetic while providing interactive, mobile-ready profile management.
+The **Student Profile Application** is a responsive, terminal-themed hybrid mobile application built using HTML5, CSS3, JavaScript, and Apache Cordova. It showcases student information, skills, portfolio projects, and personal details while supporting live profile updates using device hardware capabilities.
 
 ---
 
 ## 2. Application Pages
-
-| Page | File | Purpose |
-| --- | --- | --- |
-| **Profile** | `www/index.html` | The main landing page. Displays personal info, course, year level, bio, and skills summary, with quick links to other sections and top-bar profile editing access. |
-| **About** | `www/about.html` | The personal background section. Features personal bio paragraphs along with panels for interests, education, and future aspirations. |
-| **Skills** | `www/skills.html` | Categorized showcase of technical skills across programming/development, web design, and tools/workflows. |
-| **Projects** | `www/projects.html` | Portfolio displaying key projects, descriptions, contributions, and tech stacks used. |
-| **Contact** | `www/contact.html` | Displays contact information (email, GitHub, location) and a sample contact form layout. |
+The application consists of five primary navigation screens:
+* **Profile:** Displays the main student profile card, avatar, current system status, quick skills summary, and navigation links.
+* **About:** Outlines academic background, personal interests, hobbies, and career goals.
+* **Skills:** Presents categorized technical proficiencies, including programming languages, design tools, and utilities.
+* **Projects:** Features built applications, technologies utilized, and project roles.
+* **Contact:** Contains direct contact information, social links, and an interactive messaging form.
 
 ---
 
 ## 3. Profile Editing
-
-The application includes an interactive modal interface (`edit_profile.sh`) that allows users to modify their profile information directly on the homepage. 
-
-Users trigger the modal by hovering over or clicking the profile picture icon in the top-right navigation bar (which displays an "Edit Profile" popup) or by clicking the main profile picture.
-
-### Modifiable Information:
-- **Profile Picture**: Image upload via local file input with real-time preview.
-- **Full Name**: Student's display name.
-- **Course**: Academic degree program.
-- **Year Level**: Current academic year.
-- **About Me**: Brief personal bio.
-- **Skills**: Comma-separated list of technical capabilities and hobbies.
+The application features an interactive **Edit Profile** modal (`edit_profile.sh`). Users can update their name, course, year level, bio, and skills in real time. 
+* All profile data is serialized into JSON format.
+* Data is stored locally in the browser's `localStorage` key (`studentProfile`).
+* Changes persist across app restarts and reloads without needing an external database.
 
 ---
 
-## 4. JavaScript Functionality
+## 4. Camera Integration
+Profile pictures can be captured directly through native mobile camera hardware using the `cordova-plugin-camera` plugin.
 
-All dynamic interactions are handled in `script.js`:
+**Process Flow:**
+$$\text{Change Profile Picture} \longrightarrow \text{Open Camera} \longrightarrow \text{Capture Image} \longrightarrow \text{Update Profile Picture}$$
 
-- **Form Handling:** Listens for user actions to open and close the modal dialog, populates form inputs with current DOM values on open, and processes local file selections via the FileReader API for real-time photo previewing.
-- **Validation:** Implements client-side checks before saving. Verifies that no required fields are left empty (`!nameVal || !courseVal || ...`). If any input is missing, an error message (`[ERROR] All fields are required. Please complete the form.`) is displayed inside the modal without closing it.
-- **Profile Updates:** Reads newly validated inputs and dynamically updates the corresponding DOM elements on the page (`#display-name`, `#display-course`, `#display-year`, `#display-about`, `#display-skills`, `#display-avatar`, and `#topbar-avatar`).
-- **Save:** Triggered by the "Save Changes" button. Validates input values, serializes the updated profile into JSON, stores the data in `localStorage`, updates the UI, and closes the modal window.
-- **Cancel:** Triggered by the "Cancel" button, the modal close (`×`) button, clicking outside the modal overlay, or pressing the `Escape` key. Reverts pending changes and closes the overlay without altering saved data.
-
----
-
-## 5. Local Data Storage
-
-The application uses `localStorage` to persist user profile modifications across browser refreshes and application restarts:
-
-- **Storage (`setItem`):** Upon clicking "Save Changes", the profile object containing the avatar Data URL, name, course, year level, about bio, and skills list is converted into a JSON string using `JSON.stringify()` and stored under the key `'studentProfile'`.
-- **Retrieval (`getItem`):** When the page finishes loading (`DOMContentLoaded`), `loadProfileData()` checks if `'studentProfile'` exists in `localStorage`. If found, it parses the JSON string using `JSON.parse()` and populates the profile card and header avatar with the saved values. If no saved data exists, default content is displayed.
+1. The user clicks **`> Take Photo`** inside the profile editing modal.
+2. The application triggers `navigator.camera.getPicture()`.
+3. The native device camera interface launches.
+4. After capturing and approving the snapshot, the photo data is passed back to JavaScript.
+5. The circular avatar preview instantly updates with the new image.
 
 ---
 
-## 6. Responsive Design
-
-The layout uses a mobile-first approach with standard media queries:
-
-- **Mobile (under 640px):** Single-column layout. Navigation displays at the bottom of the screen as a fixed tab bar within easy thumb reach.
-- **Tablet (640px to 999px):** Content expands into multi-column panel grids. At 700px, navigation moves up into the main header bar.
-- **Desktop (1000px and above):** Expands to a multi-column design capped at a maximum width of `900px` for optimal readability, with scaled spacing and responsive modal overlays.
+## 5. Device Feature Integration
+Apache Cordova is required because standard WebViews inside mobile apps cannot directly invoke native device hardware (such as camera lenses) or manage system-level runtime permissions. Cordova acts as a native bridge (`cordova.exec`), allowing JavaScript calls to execute Android `CameraLauncher` Intents (`MediaStore.ACTION_IMAGE_CAPTURE`).
 
 ---
 
-## 7. How to Run
+## 6. Image Handling
+* **Format:** Captured photos are returned from native Java code as Base64-encoded JPEG strings (`DATA_URL`).
+* **Display:** The base64 string is assigned directly to the `src` attribute of the avatar `<img>` DOM elements (`data:image/jpeg;base64,...`).
+* **Persistence:** The Base64 string is saved to `localStorage` alongside profile text details, allowing custom profile photos to load automatically upon launching the application.
 
-### Requirements
-- Node.js 20.17.0 or later
-- Java JDK 17
-- Android Studio with SDK Platform 36 and Build Tools 36.0.0
-- `JAVA_HOME` and `ANDROID_HOME` environment variables set
-- Apache Cordova CLI (`npm install -g cordova`)
+---
 
-### Build and Run on Android
+## 7. Error Handling
+The application includes robust error and edge-case handling within the camera error callback:
+* **Camera Permission Denial:** If the user denies camera permissions, an onscreen alert message (`[ERR] Camera permission denied`) instructs the user to enable camera access in system settings.
+* **Camera Cancellation:** If the user closes or cancels the camera interface without taking a photo, the error callback detects the cancellation string (`camera cancelled` / `no image selected`) and exits gracefully without altering or clearing the existing profile picture.
+* **Camera Errors:** Hardware crashes, device incompatibility, or missing cameras are caught in a `try...catch` block and display user-friendly error messages on screen.
 
-```bash
-# 1. Install dependencies
-npm install
+---
 
-# 2. Add Android platform
-cordova platform add android
+## 8. Responsive Design
+The application layout adapts seamlessly across screen dimensions:
+* **Mobile (< 600px):** Single-column layout with a bottom navigation bar for quick thumb navigation.
+* **Tablet (600px – 899px):** Two-column grid layouts for page links and skills sections with expanded padding.
+* **Desktop ($\ge$ 900px):** Top navigation bar display, fixed-width centered main container (`900px`), and side-by-side content alignment.
 
-# 3. Check environment prerequisites
-cordova requirements
+---
 
-# 4. Build application
-cordova build android
+## 9. How to Run
 
-# 5. Run on device or emulator
-cordova run android
+### Install Dependencies
+* Install [Node.js](https://nodejs.org/) (v16 or higher).
+* Install Apache Cordova CLI globally:
+  ```bash
+  npm install -g cordova
 
-## 7. Application Screenshots
+## 10. Application Screenshots
 
 ### Profile (Homepage)
 ![Profile Page](screenshots/studentprofile.png)
@@ -124,3 +103,20 @@ cordova run android
 
 ### Update Profile
 ![Update Profile](screenshots/updatedprofile.png)
+
+## Cordova Application Screenshot
+
+### Cordova Student Profile
+![Cordova SP](screenshots/CordovaStudentProfile.png)
+
+### Changed Profile Picture
+![Change Picture](screenshots/ChangedProfile.png)
+
+### Capture Image
+![Take Picture](screenshots/CapturedImage.png)
+
+### Cordova Updated Profile
+![Cordova Update](screenshots/CordovaUpdatedProfile.png)
+
+
+

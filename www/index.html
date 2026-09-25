@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:;">
-    <meta name="description" content="Student profile of Gio Duldoco, Information Technology student and mobile app developer.">
+    
+    <!-- CSP Configured to allow Base64 data URLs & Cordova Camera images -->
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self' data: gap: cdvfile: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   font-src 'self' data: https://fonts.gstatic.com; 
+                   img-src 'self' data: content: cdvfile: blob:;">
+                   
     <title>Gio Duldoco | Profile</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
@@ -36,12 +40,12 @@
                     </ul>
                 </nav>
 
-                <!-- TOP-RIGHT PROFILE AVATAR WITH HOVER TOOLTIP -->
+                <!-- FIXED TOOLTIP CONTAINER -->
                 <div class="avatar-tooltip-wrapper">
-                    <button type="button" id="topbar-profile-btn" class="topbar-avatar-btn" aria-label="Edit Profile">
+                    <button type="button" id="topbar-profile-btn" class="topbar-avatar-btn" aria-label="Edit Profile" aria-haspopup="dialog" aria-expanded="false">
                         <img id="topbar-avatar" src="img/profile.jpg" alt="Profile avatar" class="topbar-avatar-img">
                     </button>
-                    <span class="tooltip-popup">Edit Profile</span>
+                    <span id="avatar-tooltip" class="tooltip-popup">Edit Profile</span>
                 </div>
             </div>
         </div>
@@ -51,27 +55,24 @@
 
         <!-- ===== HERO / PROFILE CARD ===== -->
         <section class="cyber-card hero">
-
-            <!-- PROFILE DISPLAY MODE -->
             <div id="profile-view">
                 <div class="avatar-wrapper">
                     <img id="display-avatar" src="img/profile.jpg" alt="Portrait of Gio Duldoco" class="profile-img" width="132" height="132">
                     <span class="status-indicator" aria-hidden="true"></span>
                 </div>
                 <h1 class="hero-name" id="display-name">Gio Carlo E. Duldoco</h1>
-                <p class="hero-tagline"><span id="display-course">Bachelor of Science in Information Technology</span> — <span id="display-year">2nd year</span></p>
-                <p class="hero-intro" id="display-about">I am a 2nd Year BSIT student</p>
+                <p class="hero-tagline"><span id="display-course">Bachelor of Science in Information Technology</span> — <span id="display-year">3rd year</span></p>
+                <p class="hero-intro" id="display-about">I like to cook, play sport, draw, and innovate ideas as my personal hobby. I am also curious in things that are caught my interest.</p>
                 
                 <div class="skills-summary">
                     <p class="skills-title"><span class="accent">&gt;</span> Skills:</p>
-                    <p class="hero-intro" id="display-skills">Volleyball Athlete, Java and Python Enthusiast, Cooking</p>
+                    <p class="hero-intro" id="display-skills">Java, Python, HTML, CSS, JavaScript, SQL, Web Designer, Graphic Designer</p>
                 </div>
 
                 <p class="terminal-badge">
                     <span class="blink" aria-hidden="true">&gt;</span> system status: online
                 </p>
             </div>
-
         </section>
 
         <!-- ===== ENTRY POINTS TO THE OTHER PAGES ===== -->
@@ -83,17 +84,14 @@
                     <span class="page-link-title">About</span>
                     <span class="page-link-desc">My background, interests, education and what I am working toward.</span>
                 </a>
-
                 <a class="page-link" href="skills.html">
                     <span class="page-link-title">Skills</span>
                     <span class="page-link-desc">The technologies I use, grouped by development, design and tooling.</span>
                 </a>
-
                 <a class="page-link" href="projects.html">
                     <span class="page-link-title">Projects</span>
                     <span class="page-link-desc">Applications I have built, my role in each, and the tools behind them.</span>
                 </a>
-
                 <a class="page-link" href="contact.html">
                     <span class="page-link-title">Contact</span>
                     <span class="page-link-desc">Email, GitHub and professional profiles if you want to reach me.</span>
@@ -104,64 +102,78 @@
     </main>
 
     <!-- ===== EDIT PROFILE POPUP MODAL ===== -->
-    <div id="edit-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal-content cyber-card" role="dialog" aria-labelledby="modal-title">
+    <div id="edit-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-title">
+        <div class="modal-content cyber-card">
             <div class="modal-header">
                 <h2 id="modal-title" class="section-title"><span class="accent">&gt;</span> edit_profile.sh</h2>
                 <button type="button" id="close-modal-btn" class="modal-close" aria-label="Close dialog">&times;</button>
             </div>
             
-            <p id="error-message" class="error-text"></p>
+            <p id="error-message" class="error-text" role="alert" aria-live="polite"></p>
 
-            <form id="profile-form" class="cyber-form">
+            <form id="profile-form" class="cyber-form" novalidate>
                 
-                <!-- Profile Picture Edit / Upload -->
+                <!-- Profile Picture Edit Section -->
                 <div class="form-group">
-                    <label for="input-avatar">&gt; Profile Picture:</label>
+                    <label>&gt; Profile Picture:</label>
                     <div class="avatar-upload-container">
                         <img id="avatar-preview" src="img/profile.jpg" alt="Profile Preview" class="profile-img-preview">
-                        <input type="file" id="input-avatar" accept="image/*" class="cyber-file-input">
+                        
+                        <div class="avatar-controls">
+                            <button type="button" id="open-camera-btn" class="cyber-btn">&gt; Take Photo</button>
+                            <input type="file" id="input-avatar" accept="image/*" class="cyber-file-input">
+                        </div>
+                    </div>
+
+                    <!-- Webcam Stream Container for Desktop Live Server Testing -->
+                    <div id="webcam-container" style="display: none; margin-top: 12px; text-align: center;">
+                        <video id="webcam-video" autoplay playsinline style="width: 100%; max-width: 220px; border-radius: 8px; border: 1px solid var(--accent-green);"></video>
+                        <div style="margin-top: 6px;">
+                            <button type="button" id="snap-btn" class="cyber-btn" style="padding: 4px 10px; font-size: 0.78rem;">&gt; Snap Photo</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="input-name">&gt; Full Name:</label>
-                    <input type="text" id="input-name" class="cyber-input">
+                    <input type="text" id="input-name" class="cyber-input" required>
                 </div>
 
                 <div class="form-group">
                     <label for="input-course">&gt; Course:</label>
-                    <input type="text" id="input-course" class="cyber-input">
+                    <input type="text" id="input-course" class="cyber-input" required>
                 </div>
 
                 <div class="form-group">
                     <label for="input-year">&gt; Year Level:</label>
-                    <input type="text" id="input-year" class="cyber-input">
+                    <input type="text" id="input-year" class="cyber-input" required>
                 </div>
 
                 <div class="form-group">
                     <label for="input-about">&gt; About Me:</label>
-                    <textarea id="input-about" rows="4" class="cyber-input"></textarea>
+                    <textarea id="input-about" rows="4" class="cyber-input" required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="input-skills">&gt; Skills (comma separated):</label>
-                    <input type="text" id="input-skills" class="cyber-input">
+                    <input type="text" id="input-skills" class="cyber-input" required>
                 </div>
 
                 <div class="form-actions">
                     <button type="button" id="save-btn" class="cyber-btn">&gt; Save Changes</button>
                     <button type="button" id="cancel-btn" class="cyber-btn secondary">&gt; Cancel</button>
+                    <button type="button" id="reset-btn" class="cyber-btn danger">&gt; Reset Defaults</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
         <p>&copy; 2026 Gio Duldoco. All rights reserved. [EOF]</p>
     </footer>
 
+    <!-- CORDOVA & APP SCRIPTS -->
+    <script src="cordova.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
